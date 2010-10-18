@@ -5,4 +5,5 @@
 - Add normal plugin trappings
 - Write the docs
 - Handle multiple line visual selection
+- Handle paths with spaces
 - Handle errors when there is no `default.cfg` or the file does not exist
