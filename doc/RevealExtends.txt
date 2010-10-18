@@ -1,0 +1,3 @@
+*RevealExtends* Plugin to reveal extended URLs from the buildout cache
+
+Finish these docs later...
