@@ -5,17 +5,26 @@ function! s:RevealExtends(line1, line2, count, ...)
     " yank the visual selection
     normal! gvy
     " get rid of spaces and newlines
-    let @@ = substitute(@@, '\n', '', 'g')
-    let @@ = substitute(@@, ' ', '', 'g')
+    let s:hash_string = substitute(@@, '\n', '', 'g')
+    let s:hash_string = substitute(s:hash_string, ' ', '', 'g')
     " find the extends cache directory
     let s:dirname = substitute(system("awk '/^extends/ {print $3}' ~/.buildout/default.cfg"), '\n', '', 'g')
     " get the md5 hash of the url string
-    let s:filename = system("md5 -s '" . @@ . "' | awk '{print $4}'")
+    let s:filename = substitute(system("md5 -s '" . s:hash_string . "' | awk '{print $4}'"), '\n', '', 'g')
     " set the register back to the previous contents
     let @@ = s:original_reg
     let s:file_path = s:dirname . "/" . s:filename
-    " open up the file and set the syntax to CFG
-    exe "edit +set\\ filetype=cfg " . s:file_path
+    if filereadable(s:file_path)
+        " Create a scractch buffer
+        botright new
+        setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap filetype=cfg
+        " Read the file into the scratch buffer
+        execute "read " . s:file_path
+    else
+        echo "No file in the cache for '" . s:hash_string . "'"
+    endif
 endfunction
 
+" command to run the reveal function
+" TODO: change this to accept arguments
 command! -nargs=0 -range=0 RevealExtends call s:RevealExtends(<line1>, <line2>, <count>, <f-args>)
