@@ -1,0 +1,8 @@
+- Pass in a URL directly
+- Use the current line without a visual selection
+- Fix that annoying trailing characters issue
+- Finish up proper plugin docs
+- Add normal plugin trappings
+- Write the docs
+- Handle multiple line visual selection
+- Handle errors when there is no `default.cfg` or the file does not exist
