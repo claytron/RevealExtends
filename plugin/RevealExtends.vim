@@ -18,4 +18,4 @@ function! s:RevealExtends(line1, line2, count, ...)
     exe "edit +set\\ filetype=cfg " . s:file_path
 endfunction
 
-command! -nargs=0 -range=0 RevealExtends call s:RevealExtends(<line1>, <line2>, <count>, <f-args>)<CR>
+command! -nargs=0 -range=0 RevealExtends call s:RevealExtends(<line1>, <line2>, <count>, <f-args>)
