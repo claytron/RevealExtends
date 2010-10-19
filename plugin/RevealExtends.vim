@@ -6,16 +6,14 @@ function! s:RevealExtends(line1, line2, count, ...)
     endif
     " save the register to put it back later
     let s:original_reg = @"
-    let s:line2 = a:line2
     " If there is no count, just use the current line
     if a:count == 0
-        let s:line2 = a:line1
+        silent execute a:line1 . "," . a:line1 . "yank"
+    else
+        silent normal! gvy
     endif
-    " yank the visual selection
-    silent execute a:line1 . "," . s:line2 . "yank"
-    let s:yanked_text = @"
     " get rid of spaces and newlines
-    let s:hash_string = substitute(substitute(s:yanked_text, '\n', '', 'g'), ' ', '', 'g')
+    let s:hash_string = substitute(substitute(@", '\n', '', 'g'), ' ', '', 'g')
     " find the extends cache directory
     let s:dirname = substitute(system("awk '/^extends/ {print $3}' ~/.buildout/default.cfg"), '\n', '', 'g')
     " get the md5 hash of the url string
