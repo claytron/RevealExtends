@@ -26,7 +26,7 @@ function! s:RevealExtends(line1, line2, count, ...)
         " Read the file into the scratch buffer
         execute "read " . s:file_path
     else
-        echo "No file in the cache for '" . s:hash_string . "'"
+        echo "No file in the cache (" . s:dirname . ") for '" . s:hash_string . "'"
     endif
 endfunction
 
