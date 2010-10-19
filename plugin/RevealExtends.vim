@@ -4,7 +4,7 @@
 " License: WTFPLv2 http://sam.zoy.org/wtfpl/
 
 if exists('g:loaded_RevealExtends')
-  finish
+    finish
 endif
 let g:loaded_RevealExtends = 1
 
