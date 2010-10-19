@@ -1,4 +1,9 @@
 function! s:RevealExtends(line1, line2, count, ...)
+    let s:config_file = expand("~/.buildout/default.cfg")
+    if !filereadable(s:config_file)
+        echo "Default buildout config not found: " . s:config_file
+        return
+    endif
     " save the register to put it back later
     let s:original_reg = @@
     " XXX: a better way to handle this?
