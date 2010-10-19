@@ -21,7 +21,7 @@ function! s:RevealExtends(line1, line2, count, ...)
     " get the md5 hash of the url string
     let s:filename = substitute(system("md5 -s '" . s:hash_string . "' | awk '{print $4}'"), '\n', '', 'g')
     " set the register back to the previous contents
-    let @@ = s:original_reg
+    let @" = s:original_reg
     let s:file_path = s:dirname . "/" . s:filename
     if filereadable(s:file_path)
         " Create a scractch buffer
