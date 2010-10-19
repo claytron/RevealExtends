@@ -17,22 +17,26 @@ function! s:RevealExtends(line1, line2, count, ...)
         echo "Default buildout config not found: " . s:config_file
         return
     endif
-    " save the register to put it back later
-    let s:original_reg = @"
-    " If there is no count, just use the current line
-    if a:count == 0
-        silent execute a:line1 . "," . a:line1 . "yank"
+    if exists('a:1')
+        let s:hash_string = a:1
     else
-        silent normal! gvy
+        " save the register to put it back later
+        let s:original_reg = @"
+        " If there is no count, just use the current line
+        if a:count == 0
+            silent execute a:line1 . "," . a:line1 . "yank"
+        else
+            silent normal! gvy
+        endif
+        " get rid of spaces and newlines
+        let s:hash_string = substitute(substitute(@", '\n', '', 'g'), ' ', '', 'g')
+        " set the register back to the previous contents
+        let @" = s:original_reg
     endif
-    " get rid of spaces and newlines
-    let s:hash_string = substitute(substitute(@", '\n', '', 'g'), ' ', '', 'g')
     " find the extends cache directory
     let s:dirname = substitute(system("awk '/^extends/ {print $3}' ~/.buildout/default.cfg"), '\n', '', 'g')
     " get the md5 hash of the url string
     let s:filename = substitute(system("md5 -s '" . s:hash_string . "' | awk '{print $4}'"), '\n', '', 'g')
-    " set the register back to the previous contents
-    let @" = s:original_reg
     let s:file_path = s:dirname . "/" . s:filename
     if filereadable(s:file_path)
         " Create a scractch buffer
@@ -46,8 +50,7 @@ function! s:RevealExtends(line1, line2, count, ...)
 endfunction
 
 " command to run the reveal function
-" TODO: change this to accept arguments
-command! -nargs=0 -range=0 RevealExtends call s:RevealExtends(<line1>, <line2>, <count>, <f-args>)
+command! -nargs=? -range=0 RevealExtends call s:RevealExtends(<line1>, <line2>, <count>, <f-args>)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
