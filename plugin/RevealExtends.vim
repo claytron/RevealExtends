@@ -10,8 +10,7 @@ function! s:RevealExtends(line1, line2, count, ...)
     " yank the visual selection
     normal! gvy
     " get rid of spaces and newlines
-    let s:hash_string = substitute(@@, '\n', '', 'g')
-    let s:hash_string = substitute(s:hash_string, ' ', '', 'g')
+    let s:hash_string = substitute(substitute(s:yanked_text, '\n', '', 'g'), ' ', '', 'g')
     " find the extends cache directory
     let s:dirname = substitute(system("awk '/^extends/ {print $3}' ~/.buildout/default.cfg"), '\n', '', 'g')
     " get the md5 hash of the url string
