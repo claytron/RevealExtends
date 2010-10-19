@@ -7,6 +7,10 @@ if exists('g:loaded_RevealExtends')
   finish
 endif
 let g:loaded_RevealExtends = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
+
 function! s:RevealExtends(line1, line2, count, ...)
     let s:config_file = expand("~/.buildout/default.cfg")
     if !filereadable(s:config_file)
@@ -44,3 +48,6 @@ endfunction
 " command to run the reveal function
 " TODO: change this to accept arguments
 command! -nargs=0 -range=0 RevealExtends call s:RevealExtends(<line1>, <line2>, <count>, <f-args>)
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
