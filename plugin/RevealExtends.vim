@@ -1,3 +1,7 @@
+" RevealExtends
+" Version: 1.0
+" Author : Clayton Parker <robots AT claytron DOT com>
+" License: WTFPLv2 http://sam.zoy.org/wtfpl/
 function! s:RevealExtends(line1, line2, count, ...)
     let s:config_file = expand("~/.buildout/default.cfg")
     if !filereadable(s:config_file)
