@@ -2,6 +2,11 @@
 " Version: 1.0
 " Author : Clayton Parker <robots AT claytron DOT com>
 " License: WTFPLv2 http://sam.zoy.org/wtfpl/
+
+if exists('g:loaded_RevealExtends')
+  finish
+endif
+let g:loaded_RevealExtends = 1
 function! s:RevealExtends(line1, line2, count, ...)
     let s:config_file = expand("~/.buildout/default.cfg")
     if !filereadable(s:config_file)
