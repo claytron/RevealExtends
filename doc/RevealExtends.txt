@@ -58,8 +58,11 @@ The plugin comes with one command called RevealExtends.
 
 :RevealExtends [<extended_url>]                                 *:RevealExtends*
 
-This command takes a url and looks for the corresponding cache file. The
-URL can be provided in one of three ways.
+This command takes a url and looks for the corresponding cache file. If the
+cache file does not exist, the plugin will attempt to access the URL directly.
+Downloading the URL requires vim to be compiled with Python support.
+
+The URL can be provided in one of three ways.
 
   1. Calling :RevealExtends with no arguments and no visual selection will
   use the entire current line you are on. Whitespace and new lines will be
