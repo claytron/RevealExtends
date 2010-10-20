@@ -1,3 +1,1 @@
-- Write the docs
 - Handle paths with spaces
-- If the cache is empty, try downloading the file into /tmp
