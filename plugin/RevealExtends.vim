@@ -65,8 +65,8 @@ function! s:openURL(url)
     if has('python')
 python << ENDPYTHON
 import vim
-from urllib import urlopen
 from tempfile import NamedTemporaryFile
+from urllib import urlopen
 url = vim.eval('a:url')
 try:
     extends_file = urlopen(url)
