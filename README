@@ -1,3 +1,34 @@
-A plugin to open up the cached file associated with the extended URL.
+Developers can use zc.buildout to manage the build of a software project. It
+is most commonly used in the Zope and Plone world, but has been gaining
+traction in other communities like Django.
 
-see doc/RevealExtends.txt for more information
+One of the nice things about buildout is the ability to define the
+configuration via ini style files. You can extend a local file or a URL. In
+version 1.4.0 of buildout, the option to cache the URL locally was added along
+with the new download API.
+
+Here is an example: >
+
+    [buildout]
+    versions = versions
+    extends = 
+       http://dist.example.org/versions.cfg
+       versions.cfg
+
+>
+
+This allows you to pull in a list of versions from example.org. If you have
+your default.cfg setup to cache the URL then you could find that file
+manually. This requires that you know the md5 hash of the URL string. Not the
+most convenient way to find the file. This is where the plugin comes in
+handy.
+
+The plugin allows you to use the current line, a visual selection or a string
+passed in to get the contents of the extended URL using the :RevealExtends command.
+
+See the included docs for more information.
+
+Python support is required for retrieving the URL from the internet if it can't
+be found in the cache.
+
+See the code on github: http://github.com/claytron/RevealExtends
