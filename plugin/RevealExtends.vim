@@ -68,12 +68,15 @@ import vim
 from tempfile import NamedTemporaryFile
 from urllib import urlopen
 url = vim.eval('a:url')
+# try/except in case the string is not a URL
 try:
     extends_file = urlopen(url)
     # TODO: handle redirect, etc.
     if extends_file.code == 200:
+        # we have an extends file
         vim.command('let g:extends_exists = 1')
         contents = extends_file.read()
+        # create a temporary file to put the url contents into
         tmp_file = NamedTemporaryFile()
         tmp_file.write(contents)
         # seek to the beginning of the file so we can read it
@@ -81,6 +84,7 @@ try:
         vim.command('let s:file_path = "%s"' % tmp_file.name)
         # open up the scratch buffer
         vim.command('call s:openScratchBuffer(s:file_path)')
+        # close our files, deleting the tmp file
         tmp_file.close()
         extends_file.close()
 except IOError:
