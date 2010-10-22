@@ -76,6 +76,8 @@ try:
         contents = extends_file.read()
         tmp_file = NamedTemporaryFile()
         tmp_file.write(contents)
+        # seek to the beginning of the file so we can read it
+        tmp_file.seek(0)
         vim.command('let s:file_path = "%s"' % tmp_file.name)
         # open up the scratch buffer
         vim.command('call s:openScratchBuffer(s:file_path)')
