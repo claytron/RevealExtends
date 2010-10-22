@@ -17,7 +17,7 @@ function! s:RevealExtends(line1, line2, count, ...)
     let s:config_file = expand("~/.buildout/default.cfg")
     if !filereadable(s:config_file)
         if exists('a:1')
-            call s:openURL(a:1)
+            call s:openURL(s:cleanUpWhitespace(a:1))
         endif
         if !g:extends_exists
             echo "Default buildout config not found: " . s:config_file
@@ -27,7 +27,7 @@ function! s:RevealExtends(line1, line2, count, ...)
         return
     endif
     if exists('a:1')
-        let s:hash_string = a:1
+        let s:hash_string = s:cleanUpWhitespace(a:1)
     else
         " save the register to put it back later
         let s:original_reg = @"
@@ -38,14 +38,14 @@ function! s:RevealExtends(line1, line2, count, ...)
             silent normal! gvy
         endif
         " get rid of spaces and newlines
-        let s:hash_string = substitute(substitute(@", '\n', '', 'g'), ' ', '', 'g')
+        let s:hash_string = s:cleanUpWhitespace(@")
         " set the register back to the previous contents
         let @" = s:original_reg
     endif
     " find the extends cache directory
-    let s:dirname = substitute(system("awk '/^extends/ {print $3}' ~/.buildout/default.cfg"), '\n', '', 'g')
+    let s:dirname = s:cleanUpWhitespace(system("awk -F= '/^extends/ {print $2}' ~/.buildout/default.cfg"))
     " get the md5 hash of the url string
-    let s:filename = substitute(system("md5 -s '" . s:hash_string . "' | awk '{print $4}'"), '\n', '', 'g')
+    let s:filename = s:cleanUpWhitespace(system("md5 -s '" . s:hash_string . "' | awk '{print $4}'"))
     let s:file_path = s:dirname . "/" . s:filename
     if filereadable(s:file_path)
         let g:extends_exists = 1
@@ -100,7 +100,15 @@ function! s:openScratchBuffer(file_path)
     botright new
     setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap filetype=cfg
     " Read the file into the scratch buffer
-    execute "read " . a:file_path
+    let s:escaped_path = fnameescape(a:file_path)
+    execute "read " . s:escaped_path
+endfunction
+
+function! s:cleanUpWhitespace(dirty_string)
+    " remove beginning and trailing whitespace
+    let s:no_whitespace = substitute(substitute(a:dirty_string, '^\s*', '', 'g'), '\s*$', '', 'g')
+    " remove all newlines
+    return substitute(s:no_whitespace, '\n', '', 'g')
 endfunction
 
 " command to run the reveal function
